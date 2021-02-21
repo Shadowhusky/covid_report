@@ -25,3 +25,26 @@ $bg_mask: "../assets/imgs/bg_mask.png";
   width: 2.7rem;
   top: 0.15rem;
 }
+
+.#{$prefix}-title {
+  margin: 0 auto;
+  position: absolute;
+
+  font-family: FZZongYi-M05S;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 44px;
+  /* identical to box height */
+
+  color: #ffffff;
+}
+
+.#{$prefix}-title-country {
+  top: 0.96rem;
+  font-size: 0.462rem;
+}
+
+.#{$prefix}-title-sub {
+  top: 1.65rem;
+  font-size: 0.69rem
+}

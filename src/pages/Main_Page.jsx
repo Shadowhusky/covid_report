@@ -17,6 +17,11 @@ function Main_Page() {
   return (
     <section className={`${prefix}container`}>
       <img className={`${prefix}logo`} alt="" src={main_logo}></img>
+      <p className={classnames(`${prefix}title`, `${prefix}title-country`)}>
+        {" "}
+        英国新冠疫情{" "}
+      </p>
+      <p className={classnames(`${prefix}title`, `${prefix}title-sub`)}> 实时数据 </p>
     </section>
   );
 }

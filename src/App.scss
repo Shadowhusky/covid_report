@@ -13,3 +13,9 @@ $prefix: covid;
 html {
   font-size: 22vw;
 }
+
+@media (min-width: 500px) {
+  html {
+    font-size: 12vw;
+  }
+}
