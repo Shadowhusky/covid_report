@@ -35,8 +35,13 @@ function Main_Page() {
         {" "}
         实时数据{" "}
       </p>
-      <div className={`${prefix}covid-info-container`}>
-        <div className={`${prefix}date-container`}>
+      <div
+        className={classnames(
+          `${prefix}covid-info-container`,
+          `${prefix}covid-info-container-data`
+        )}
+      >
+        <div className={`${prefix}covid-info-title`}>
           {`${currentDate.getFullYear()}年${
             currentDate.getMonth() + 1
           }月${currentDate.getDate()}日`}
@@ -55,6 +60,14 @@ function Main_Page() {
           <CovidInfo title="今日治愈" type="cured" count={1000} sum={1000} />
           <CovidInfo title="今日死亡" type="died" count={1000} sum={1000} />
         </div>
+      </div>
+      <div
+        className={classnames(
+          `${prefix}covid-info-container`,
+          `${prefix}covid-info-container-graph`
+        )}
+      >
+        <div className={`${prefix}covid-info-title`}>目前增长趋势</div>
       </div>
     </section>
   );
