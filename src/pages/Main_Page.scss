@@ -123,7 +123,7 @@ $bg_mask: "../assets/imgs/bg_mask.png";
 }
 
 .#{$prefix}-country-selector {
-  top: 9rem;
+  top: 8.9rem;
   position: absolute;
   display: flex;
   justify-content: space-around;
@@ -131,11 +131,34 @@ $bg_mask: "../assets/imgs/bg_mask.png";
   font-family: FZYaSong-H-GBK;
   font-style: normal;
   font-weight: normal;
-  font-size: 0.23rem;
+  font-size: 0.22rem;
   line-height: 0.25rem;
   color: #ffffff;
 
   > div {
-    margin: 0 0.22rem;
+    margin-left: 0.22rem;
   }
+}
+
+.#{$prefix}-generate-report-button {
+  position: absolute;
+  width: 3.3rem;
+  height: 0.73rem;
+  top: 9.55rem;
+
+  background: #5796ff;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 50px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: FZZongYi-M05S;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.25rem;
+  line-height: 0.29rem;
+
+  color: #ffffff;
 }

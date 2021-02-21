@@ -103,6 +103,7 @@ function Main_Page() {
           </div>
         </Dropdown>
       </div>
+      <div className={`${prefix}generate-report-button`}>生成报告</div>
     </section>
   );
 }
