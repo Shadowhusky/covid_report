@@ -9,21 +9,22 @@ import { useEffect } from "react";
 
 const prefix = "covid-";
 
+const reportWidth = (414 / 896) * window.innerHeight;
+
 const updateSize = () => {
-  document.documentElement.style.fontSize =
-  ((414 / 896) * window.innerHeight) / 5 + "px";
+  document.documentElement.style.fontSize = reportWidth / 5 + "px";
 };
 
 function App() {
   useEffect(() => {
-    updateSize()
+    updateSize();
   });
 
   window.onresize = updateSize;
 
   return (
     <div className={`${prefix}app`}>
-      <MainPage />
+      <MainPage reportWidth={reportWidth} />
     </div>
   );
 }

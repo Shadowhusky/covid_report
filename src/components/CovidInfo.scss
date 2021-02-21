@@ -1,7 +1,8 @@
 $prefix: covidinfo;
 
 .#{$prefix}-container {
-  margin: 0.2rem 0.05rem;
+  height: 0.945rem;
+  margin: 0.15rem auto 0.2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,18 +16,15 @@ $prefix: covidinfo;
   
   > p:first-child {
     font-size: 0.23rem;
-    line-height: 0.27rem;  
     color: #4B86EA;
   }
 
   > p:nth-child(2) {
-    font-size: 0.25rem;
-    line-height: 0.29rem;  
+    font-size: 0.215rem;
   }
 
   > p:last-child {
-    font-size: 0.16rem;
-    line-height: 0.18rem;  
+    font-size: 0.13rem;
     color: #BCBCBC;
   }
 }

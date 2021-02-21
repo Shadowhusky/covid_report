@@ -8,6 +8,8 @@ import main_logo from "../assets/imgs/main_logo.png";
 // Utils
 import { useState, useEffect } from "react";
 import classnames from "classnames";
+import * as htmlToImage from "html-to-image";
+import { download } from "../utils/utils";
 
 // Components
 import CovidInfo from "../components/CovidInfo";
@@ -25,23 +27,36 @@ const covid_info_default = {
   todayDeaths: 0,
   todayRecovered: 0,
   deaths: 0,
-  recovered: 0
+  recovered: 0,
 };
 
 const countryIDMap = {
-  英国: "GB",
-  澳大利亚: "AU",
-  美国: "US",
-  加拿大: "CA",
+  英国: "UK",
+  澳大利亚: "Australia",
+  美国: "USA",
+  加拿大: "Canada",
 };
 
 let menu;
 
 const defaultCountry = "英国";
-
-function Main_Page() {
+function Main_Page(props) {
+  const { reportWidth } = props;
   const [country_selected, selectCountry] = useState("英国");
   const [covid_info, update_covid_info] = useState(covid_info_default);
+
+  const generateReport = () => {
+    const node = document.querySelector(".covid-app");
+
+    htmlToImage
+      .toPng(node, { pixelRatio: 1 })
+      .then(function (dataUrl) {
+        download(dataUrl, "covid-report");
+      })
+      .catch(function (error) {
+        console.error("oops, something went wrong!", error);
+      });
+  };
 
   const updateCovid = (CountryID) => {
     fetch(`https://disease.sh/v3/covid-19/countries/${CountryID}?strict=true`)
@@ -55,8 +70,8 @@ function Main_Page() {
           todayDeaths: data.todayDeaths,
           todayRecovered: data.todayRecovered,
           deaths: data.deaths,
-          recovered: data.recovered
-        })
+          recovered: data.recovered,
+        });
       });
   };
 
@@ -118,9 +133,24 @@ function Main_Page() {
           +{covid_info["new"].toLocaleString()}
         </p>
         <div className={`${prefix}covid-multi-container`}>
-          <CovidInfo title="现有病例" type="now" count={covid_info.active} sum={covid_info.cases} />
-          <CovidInfo title="今日治愈" type="cured" count={covid_info.todayRecovered} sum={covid_info.recovered} />
-          <CovidInfo title="今日死亡" type="died" count={covid_info.todayDeaths} sum={covid_info.deaths} />
+          <CovidInfo
+            title="现有病例"
+            type="now"
+            count={covid_info.active}
+            sum={covid_info.cases}
+          />
+          <CovidInfo
+            title="今日治愈"
+            type="cured"
+            count={covid_info.todayRecovered}
+            sum={covid_info.recovered}
+          />
+          <CovidInfo
+            title="今日死亡"
+            type="died"
+            count={covid_info.todayDeaths}
+            sum={covid_info.deaths}
+          />
         </div>
       </div>
       <div
@@ -134,15 +164,17 @@ function Main_Page() {
       <div className={`${prefix}country-selector`}>
         切换国家:
         <Dropdown overlay={menu} trigger={["click"]}>
-          <div
-            className="ant-dropdown-link"
-            onClick={(e) => e.preventDefault()}
-          >
+          <div className="ant-dropdown-link">
             {country_selected} <DownOutlined />
           </div>
         </Dropdown>
       </div>
-      <div className={`${prefix}generate-report-button`}>生成报告</div>
+      <div
+        className={`${prefix}generate-report-button`}
+        onClick={generateReport}
+      >
+        生成报告
+      </div>
     </section>
   );
 }

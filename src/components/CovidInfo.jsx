@@ -15,7 +15,10 @@ function CovidInfo(props) {
   return (
     <div className={`${prefix}container`}>
       <p>{title}</p>
-      <p style={{ color: colorMap[type] }}>+{count.toLocaleString()}</p>
+      <p style={{ color: colorMap[type] }}>
+        {type !== "now" && "+"}
+        {count.toLocaleString()}
+      </p>
       <p>累计 {sum.toLocaleString()}</p>
     </div>
   );

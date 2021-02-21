@@ -1,11 +1,15 @@
 $prefix: covid;
 
+html, body {
+  overflow: hidden;
+}
+
 .#{$prefix}-app {
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background-color: #3E7AF9;
+  width: 100vw;
+  height: 100vh;
+  background-color: #3e7af9;
 }
