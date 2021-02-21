@@ -28,24 +28,22 @@ function Main_Page() {
   const [country_selected, selectCountry] = useState("英国");
   const [covid_info, update_covid_info] = useState(covid_info_default);
 
-  if (!menu) {
-    menu = (
-      <Menu>
-        <Menu.Item key="0">
-          <div onClick={(e) => selectCountry(e.target.innerText)}>英国</div>
-        </Menu.Item>
-        <Menu.Item key="1">
-          <div onClick={(e) => selectCountry(e.target.innerText)}>美国</div>
-        </Menu.Item>
-        <Menu.Item key="3">
-          <div onClick={(e) => selectCountry(e.target.innerText)}>澳大利亚</div>
-        </Menu.Item>
-        <Menu.Item key="4">
-          <div onClick={(e) => selectCountry(e.target.innerText)}>加拿大</div>
-        </Menu.Item>
-      </Menu>
-    );
-  }
+  menu = (
+    <Menu>
+      <Menu.Item key="0">
+        <div onClick={(e) => selectCountry(e.target.innerText)}>英国</div>
+      </Menu.Item>
+      <Menu.Item key="1">
+        <div onClick={(e) => selectCountry(e.target.innerText)}>美国</div>
+      </Menu.Item>
+      <Menu.Item key="3">
+        <div onClick={(e) => selectCountry(e.target.innerText)}>澳大利亚</div>
+      </Menu.Item>
+      <Menu.Item key="4">
+        <div onClick={(e) => selectCountry(e.target.innerText)}>加拿大</div>
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <section className={`${prefix}container`}>
