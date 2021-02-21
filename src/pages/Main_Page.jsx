@@ -21,7 +21,13 @@ function Main_Page() {
         {" "}
         英国新冠疫情{" "}
       </p>
-      <p className={classnames(`${prefix}title`, `${prefix}title-sub`)}> 实时数据 </p>
+      <p className={classnames(`${prefix}title`, `${prefix}title-sub`)}>
+        {" "}
+        实时数据{" "}
+      </p>
+      <div className={classnames(`${prefix}covid-info-container`)}>
+
+      </div>
     </section>
   );
 }
