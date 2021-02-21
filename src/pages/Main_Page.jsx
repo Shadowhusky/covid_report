@@ -6,7 +6,7 @@ import "antd/dist/antd.min.css";
 import main_logo from "../assets/imgs/main_logo.png";
 
 // Utils
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import classnames from "classnames";
 
 // Components
@@ -19,28 +19,69 @@ const prefix = "main-page-";
 const currentDate = new Date();
 
 const covid_info_default = {
-  new: 1000,
+  cases: 0,
+  active: 0,
+  new: 0,
+  todayDeaths: 0,
+  todayRecovered: 0,
+  deaths: 0,
+  recovered: 0
+};
+
+const countryIDMap = {
+  英国: "GB",
+  澳大利亚: "AU",
+  美国: "US",
+  加拿大: "CA",
 };
 
 let menu;
+
+const defaultCountry = "英国";
 
 function Main_Page() {
   const [country_selected, selectCountry] = useState("英国");
   const [covid_info, update_covid_info] = useState(covid_info_default);
 
+  const updateCovid = (CountryID) => {
+    fetch(`https://disease.sh/v3/covid-19/countries/${CountryID}?strict=true`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        update_covid_info({
+          cases: data.cases,
+          active: data.active,
+          new: data.todayCases,
+          todayDeaths: data.todayDeaths,
+          todayRecovered: data.todayRecovered,
+          deaths: data.deaths,
+          recovered: data.recovered
+        })
+      });
+  };
+
+  useEffect(() => updateCovid(countryIDMap[defaultCountry]), []);
+
+  const updateCountry = (e) => {
+    const countryName = e.target.innerText;
+    selectCountry(countryName);
+    const countryID = countryIDMap[countryName];
+    updateCovid(countryID);
+  };
+
   menu = (
     <Menu>
       <Menu.Item key="0">
-        <div onClick={(e) => selectCountry(e.target.innerText)}>英国</div>
+        <div onClick={updateCountry}>英国</div>
       </Menu.Item>
       <Menu.Item key="1">
-        <div onClick={(e) => selectCountry(e.target.innerText)}>美国</div>
+        <div onClick={updateCountry}>美国</div>
       </Menu.Item>
       <Menu.Item key="3">
-        <div onClick={(e) => selectCountry(e.target.innerText)}>澳大利亚</div>
+        <div onClick={updateCountry}>澳大利亚</div>
       </Menu.Item>
       <Menu.Item key="4">
-        <div onClick={(e) => selectCountry(e.target.innerText)}>加拿大</div>
+        <div onClick={updateCountry}>加拿大</div>
       </Menu.Item>
     </Menu>
   );
@@ -77,9 +118,9 @@ function Main_Page() {
           +{covid_info["new"].toLocaleString()}
         </p>
         <div className={`${prefix}covid-multi-container`}>
-          <CovidInfo title="现有病例" type="now" count={1000} sum={1000} />
-          <CovidInfo title="今日治愈" type="cured" count={1000} sum={1000} />
-          <CovidInfo title="今日死亡" type="died" count={1000} sum={1000} />
+          <CovidInfo title="现有病例" type="now" count={covid_info.active} sum={covid_info.cases} />
+          <CovidInfo title="今日治愈" type="cured" count={covid_info.todayRecovered} sum={covid_info.recovered} />
+          <CovidInfo title="今日死亡" type="died" count={covid_info.todayDeaths} sum={covid_info.deaths} />
         </div>
       </div>
       <div
