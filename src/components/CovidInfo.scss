@@ -1,0 +1,32 @@
+$prefix: covidinfo;
+
+.#{$prefix}-container {
+  margin: 0.2rem 0.05rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  > p {
+    font-family: FZChaoCuHei-M10S;
+    font-style: normal;
+    font-weight: normal;
+    margin: auto;
+  }
+  
+  > p:first-child {
+    font-size: 0.23rem;
+    line-height: 0.27rem;  
+    color: #4B86EA;
+  }
+
+  > p:nth-child(2) {
+    font-size: 0.25rem;
+    line-height: 0.29rem;  
+  }
+
+  > p:last-child {
+    font-size: 0.16rem;
+    line-height: 0.18rem;  
+    color: #BCBCBC;
+  }
+}
