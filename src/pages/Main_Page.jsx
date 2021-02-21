@@ -1,5 +1,6 @@
 // Styles
 import "./Main_Page.scss";
+import "antd/dist/antd.min.css";
 
 // Imgs
 import main_logo from "../assets/imgs/main_logo.png";
@@ -21,9 +22,31 @@ const covid_info_default = {
   new: 1000,
 };
 
+let menu;
+
 function Main_Page() {
   const [country_selected, selectCountry] = useState("英国");
   const [covid_info, update_covid_info] = useState(covid_info_default);
+
+  if (!menu) {
+    menu = (
+      <Menu>
+        <Menu.Item key="0">
+          <div onClick={(e) => selectCountry(e.target.innerText)}>英国</div>
+        </Menu.Item>
+        <Menu.Item key="1">
+          <div onClick={(e) => selectCountry(e.target.innerText)}>美国</div>
+        </Menu.Item>
+        <Menu.Item key="3">
+          <div onClick={(e) => selectCountry(e.target.innerText)}>澳大利亚</div>
+        </Menu.Item>
+        <Menu.Item key="4">
+          <div onClick={(e) => selectCountry(e.target.innerText)}>加拿大</div>
+        </Menu.Item>
+      </Menu>
+    );
+  }
+
   return (
     <section className={`${prefix}container`}>
       <img className={`${prefix}logo`} alt="" src={main_logo}></img>
@@ -68,6 +91,17 @@ function Main_Page() {
         )}
       >
         <div className={`${prefix}covid-info-title`}>目前增长趋势</div>
+      </div>
+      <div className={`${prefix}country-selector`}>
+        切换国家:
+        <Dropdown overlay={menu} trigger={["click"]}>
+          <div
+            className="ant-dropdown-link"
+            onClick={(e) => e.preventDefault()}
+          >
+            {country_selected} <DownOutlined />
+          </div>
+        </Dropdown>
       </div>
     </section>
   );

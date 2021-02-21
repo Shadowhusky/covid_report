@@ -121,3 +121,21 @@ $bg_mask: "../assets/imgs/bg_mask.png";
 
   display: flex;
 }
+
+.#{$prefix}-country-selector {
+  top: 9rem;
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+
+  font-family: FZYaSong-H-GBK;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.23rem;
+  line-height: 0.25rem;
+  color: #ffffff;
+
+  > div {
+    margin: 0 0.22rem;
+  }
+}
