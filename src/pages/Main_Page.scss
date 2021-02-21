@@ -1,0 +1,27 @@
+$prefix: main-page;
+$bg_mask: "../assets/imgs/bg_mask.png";
+
+.#{$prefix}-container {
+  width: inherit;
+  height: inherit;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url($bg_mask);
+  background-size: contain;
+  background-position: center;
+  background-color: #3e7af9;
+  overflow: hidden;
+  img {
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
+.#{$prefix}-logo {
+  margin: 0 auto;
+  position: absolute;
+  width: 2.7rem;
+  top: 0.15rem;
+}
