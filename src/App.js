@@ -9,7 +9,7 @@ import { useEffect } from "react";
 
 const prefix = "covid-";
 
-const reportWidth = (414 / 896) * window.innerHeight;
+const reportWidth = (828 / 1910) * window.innerHeight;
 
 const updateSize = () => {
   document.documentElement.style.fontSize = reportWidth / 5 + "px";

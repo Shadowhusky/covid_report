@@ -35,6 +35,8 @@ const countryIDMap = {
   澳大利亚: "Australia",
   美国: "USA",
   加拿大: "Canada",
+  新西兰: "New Zealand",
+  新加坡: "Singapore",
 };
 
 let menu;
@@ -46,8 +48,9 @@ function Main_Page(props) {
   const [covid_info, update_covid_info] = useState(covid_info_default);
 
   const generateReport = () => {
-    const node = document.querySelector(".covid-app");
-
+    const node = document.querySelector(".main-page-container");
+    node.style.width = reportWidth + "px";
+    
     htmlToImage
       .toPng(node, { pixelRatio: 1 })
       .then(function (dataUrl) {
@@ -86,18 +89,13 @@ function Main_Page(props) {
 
   menu = (
     <Menu>
-      <Menu.Item key="0">
-        <div onClick={updateCountry}>英国</div>
-      </Menu.Item>
-      <Menu.Item key="1">
-        <div onClick={updateCountry}>美国</div>
-      </Menu.Item>
-      <Menu.Item key="3">
-        <div onClick={updateCountry}>澳大利亚</div>
-      </Menu.Item>
-      <Menu.Item key="4">
-        <div onClick={updateCountry}>加拿大</div>
-      </Menu.Item>
+      {Object.keys(countryIDMap).map((contry, i) => {
+        return (
+          <Menu.Item key={i}>
+            <div onClick={updateCountry}>{contry}</div>
+          </Menu.Item>
+        );
+      })}
     </Menu>
   );
 
