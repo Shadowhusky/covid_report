@@ -1,6 +1,6 @@
 // 1rem = 82.5px
-
 $prefix: main-page;
+$bg_mask: "../assets/imgs/bg_mask.png";
 
 .#{$prefix}-container {
   width: inherit;
@@ -10,6 +10,12 @@ $prefix: main-page;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+
+  background-size: contain;
+  background-position: center;
+  background-image: url($bg_mask);
+  background-color: #3e7af9;
+
   img {
     object-fit: contain;
     object-position: center;
