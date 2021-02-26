@@ -10,7 +10,6 @@ import qrcode from "../assets/imgs/qrcode.png";
 import { useState, useEffect, useRef } from "react";
 import classnames from "classnames";
 import * as htmlToImage from "html-to-image";
-import { download } from "../utils/utils";
 
 // Components
 import CovidInfo from "../components/CovidInfo";
