@@ -16,7 +16,7 @@ export default {
     growthTrend: "目前增长趋势",
     switchCountry: "切换国家:",
     generateReport: "生成报告",
-    total: "总计"
+    total: "累计"
   },
   en_US: {
     UK: "UK",

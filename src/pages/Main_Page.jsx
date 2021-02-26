@@ -4,6 +4,7 @@ import "antd/dist/antd.min.css";
 
 // Imgs
 import main_logo from "../assets/imgs/main_logo.png";
+import qrcode from "../assets/imgs/qrcode.png";
 
 // Utils
 import { useState, useEffect } from "react";
@@ -13,8 +14,9 @@ import { download } from "../utils/utils";
 
 // Components
 import CovidInfo from "../components/CovidInfo";
-import { Menu, Dropdown } from "antd";
+import { Menu, Dropdown, Spin } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import Chart from "react-apexcharts";
 
 // I18n
 import lang from "../i18n/i18n.jsx";
@@ -70,10 +72,15 @@ function Main_Page(props) {
   const { reportWidth } = props;
   const [country_selected, selectCountry] = useState("UK");
   const [covid_info, update_covid_info] = useState(covid_info_default);
+  const [chartOptions, update_chart_options] = useState(null);
+  const [is_report, set_report_state] = useState(false);
 
   const generateReport = () => {
     const node = document.querySelector(".main-page-container");
     node.style.width = reportWidth + "px";
+
+    // Hide button and country selector, show About us
+    set_report_state(true);
 
     htmlToImage
       .toPng(node, { pixelRatio: 1 })
@@ -82,14 +89,17 @@ function Main_Page(props) {
       })
       .catch(function (error) {
         console.error("oops, something went wrong!", error);
+      })
+      .finally(() => {
+        set_report_state(false);
       });
   };
 
   const updateCovid = (CountryID) => {
+    update_chart_options(null);
     fetch(`https://disease.sh/v3/covid-19/countries/${CountryID}?strict=true`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         update_covid_info({
           cases: data.cases,
           active: data.active,
@@ -98,6 +108,49 @@ function Main_Page(props) {
           todayRecovered: data.todayRecovered,
           deaths: data.deaths,
           recovered: data.recovered,
+        });
+      });
+    fetch(`https://disease.sh/v3/covid-19/historical/${CountryID}?lastdays=90`)
+      .then((res) => res.json())
+      .then((data) => {
+        const cases = data.timeline.cases;
+        update_chart_options({
+          options: {
+            chart: {
+              animations: {
+                enabled: false,
+              },
+              id: "Linear chart",
+              toolbar: {
+                show: false,
+              },
+              selection: {
+                enabled: false,
+              },
+              zoom: {
+                enabled: false,
+              },
+            },
+            stroke: {
+              width: 3,
+            },
+            xaxis: {
+              categories: Object.keys(cases),
+              tickAmount: 6,
+              labels: {
+                rotate: 0,
+                style: {
+                  fontSize: "0.09rem",
+                },
+              },
+            },
+          },
+          series: [
+            {
+              name: "cases",
+              data: Object.values(cases),
+            },
+          ],
         });
       });
   };
@@ -193,8 +246,38 @@ function Main_Page(props) {
         <div className={`${prefix}covid-info-title`}>
           {lang[currentLang]["growthTrend"]}
         </div>
+        {chartOptions ? (
+          <Chart
+            options={chartOptions.options}
+            series={chartOptions.series}
+            type="line"
+            height="70%"
+            width="98%"
+            className={`${prefix}covid-trending-chart`}
+          />
+        ) : (
+          <Spin size="large" tip="Loading..." />
+        )}
       </div>
-      <div className={`${prefix}country-selector`}>
+      <div
+        className={classnames(
+          `${prefix}covid-info-container`,
+          `${prefix}covid-info-container-aboutus`
+        )}
+        style={{ visibility: is_report ? "visible" : "hidden" }}
+      >
+        <div className={`${prefix}covid-info-title-left`}>关于我们</div>
+        <section>
+          <p>- 打造面向留学生的 SaaS</p>
+          <p>- 交友 二手 房屋</p>
+          <p>- 高端社交平台</p>
+        </section>
+        <img src={qrcode} alt="" />
+      </div>
+      <div
+        className={`${prefix}country-selector`}
+        style={{ visibility: !is_report ? "visible" : "hidden" }}
+      >
         {lang[currentLang]["switchCountry"]}
         <Dropdown overlay={menu} trigger={["click"]}>
           <div className="ant-dropdown-link">
@@ -205,6 +288,7 @@ function Main_Page(props) {
       <div
         className={`${prefix}generate-report-button`}
         onClick={generateReport}
+        style={{ visibility: !is_report ? "visible" : "hidden" }}
       >
         {lang[currentLang]["generateReport"]}
       </div>

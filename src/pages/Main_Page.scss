@@ -2,6 +2,8 @@
 $prefix: main-page;
 $bg_mask: "../assets/imgs/bg_mask.png";
 
+@import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap');
+
 .#{$prefix}-container {
   width: inherit;
   height: inherit;
@@ -72,6 +74,18 @@ $bg_mask: "../assets/imgs/bg_mask.png";
   > .#{$prefix}-covid-info-title {
     font-family: FZZongYi-M05S;
   }
+
+  > .ant-spin {
+    width: 100%;
+    height: 1.62rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    > .ant-spin-dot-spin {
+      margin-bottom: 0.11rem;
+    }
+  }
 }
 
 .#{$prefix}-covid-info-title {
@@ -123,6 +137,10 @@ $bg_mask: "../assets/imgs/bg_mask.png";
   justify-content: center;
 }
 
+.#{$prefix}-covid-trending-chart > #apexchartsLinearxchart {
+  margin: auto;
+}
+
 .#{$prefix}-country-selector {
   top: 8.65rem;
   position: absolute;
@@ -139,6 +157,61 @@ $bg_mask: "../assets/imgs/bg_mask.png";
   > div {
     margin-left: 0.22rem;
   }
+}
+
+.#{$prefix}-covid-info-container-aboutus {
+  height: 1.25rem;
+  top: 8.65rem;
+  > section {
+    position: relative;
+    height: 50%;
+    left: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    > p {
+      margin: 0;
+
+      font-family: ZCOOL KuaiLe;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 0.15rem;
+      line-height: 0.15rem;
+
+      color: #b1b1b1;
+    }
+  }
+  > img {
+    right: 0.35rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0.78rem;
+    position: absolute;
+  }
+}
+
+.#{$prefix}-covid-info-title-left {
+  position: absolute;
+  padding: 0.2rem;
+  width: 0.56rem;
+  height: 100%;
+  border-radius: 10px 0px 0px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(85, 142, 237, 0.78);
+  box-shadow: inset 0px 4px 4px rgba(106, 155, 246, 0.64);
+
+  font-family: FZZongYi-M05S;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.2rem;
+  line-height: 0.22rem;
+  color: #ffffff;
 }
 
 .#{$prefix}-generate-report-button {
