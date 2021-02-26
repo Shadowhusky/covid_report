@@ -274,6 +274,12 @@ function Main_Page(props) {
         </section>
         <img src={qrcode} alt="" />
       </div>
+      <p
+        className={`${prefix}covid-aboutus-tips`}
+        style={{ visibility: is_report ? "visible" : "hidden" }}
+      >
+        {lang[currentLang]["tips"]}
+      </p>
       <div
         className={`${prefix}country-selector`}
         style={{ visibility: !is_report ? "visible" : "hidden" }}

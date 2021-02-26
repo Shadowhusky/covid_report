@@ -16,7 +16,8 @@ export default {
     growthTrend: "目前增长趋势",
     switchCountry: "切换国家:",
     generateReport: "生成报告",
-    total: "累计"
+    total: "累计",
+    tips: "长按扫码关注公众号，获取更多留学资讯",
   },
   en_US: {
     UK: "UK",
@@ -34,6 +35,8 @@ export default {
     growthTrend: "Growth Trend",
     switchCountry: "Select country",
     generateReport: "Generate report",
-    total: "total"
+    total: "total",
+    tips:
+      "Hold and scan the QR Code for subscribing our offical account, know more information of studying aboard",
   },
 };
