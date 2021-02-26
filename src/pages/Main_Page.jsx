@@ -7,7 +7,7 @@ import main_logo from "../assets/imgs/main_logo.png";
 import qrcode from "../assets/imgs/qrcode.png";
 
 // Utils
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import classnames from "classnames";
 import * as htmlToImage from "html-to-image";
 import { download } from "../utils/utils";
@@ -70,31 +70,35 @@ function Main_Page(props) {
     ? window.g_config.lang
     : defaultLang;
   const { reportWidth } = props;
+  const reportRef = useRef(null);
   const [country_selected, selectCountry] = useState("UK");
   const [covid_info, update_covid_info] = useState(covid_info_default);
   const [chartOptions, update_chart_options] = useState(null);
   const [is_report, set_report_state] = useState(false);
+  const [reportVisible, setReportVisibility] = useState(false);
 
   const generateReport = () => {
     const node = document.querySelector(".main-page-container");
     node.style.width = reportWidth + "px";
     document.documentElement.style.width = reportWidth + "px";
- 
 
     // Hide button and country selector, show About us
-    set_report_state(true);
+    setReportVisibility(true);
 
-    htmlToImage
-      .toPng(node, { pixelRatio: 1 })
-      .then(function (dataUrl) {
-        download(dataUrl, "covid-report");
-      })
-      .catch(function (error) {
-        console.error("oops, something went wrong!", error);
-      })
-      .finally(() => {
-        set_report_state(false);
-      });
+    setTimeout(() => {
+      set_report_state(true);
+      htmlToImage
+        .toPng(node, { pixelRatio: 1 })
+        .then(function (dataUrl) {
+          reportRef.current.src = dataUrl;
+          reportRef.current.setAttribute("state", "loaded");
+          set_report_state(false);
+        })
+        .catch(function (error) {
+          console.error("oops, something went wrong!", error);
+          setReportVisibility(false);
+        });
+    }, 500);
   };
 
   const updateCovid = (CountryID) => {
@@ -182,6 +186,28 @@ function Main_Page(props) {
 
   return (
     <div>
+      <div
+        className={`${prefix}report-mask`}
+        style={{ visibility: reportVisible ? "visible" : "hidden" }}
+      />
+      <section
+        className={classnames(
+          `${prefix}report-container`,
+          reportVisible && `${prefix}report-show-animated`
+        )}
+      >
+        <Spin size="large" tip="generating..."/>
+        <img ref={reportRef} alt="" />
+        <span
+          onClick={() => {
+            reportRef.current.setAttribute("state", "");
+            set_report_state(false);
+            setReportVisibility(false);
+          }}
+        >
+          取消
+        </span>
+      </section>
       <section className={`${prefix}container`}>
         <img className={`${prefix}logo`} alt="" src={main_logo}></img>
         <p className={classnames(`${prefix}title`, `${prefix}title-country`)}>
