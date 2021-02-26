@@ -256,7 +256,7 @@ function Main_Page(props) {
             className={`${prefix}covid-trending-chart`}
           />
         ) : (
-          <Spin size="large" tip="Loading..." />
+          <Spin tip="Loading..." />
         )}
       </div>
       <div
