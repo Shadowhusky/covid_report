@@ -78,6 +78,8 @@ function Main_Page(props) {
   const generateReport = () => {
     const node = document.querySelector(".main-page-container");
     node.style.width = reportWidth + "px";
+    document.documentElement.style.width = reportWidth + "px";
+ 
 
     // Hide button and country selector, show About us
     set_report_state(true);
@@ -179,126 +181,128 @@ function Main_Page(props) {
   );
 
   return (
-    <section className={`${prefix}container`}>
-      <img className={`${prefix}logo`} alt="" src={main_logo}></img>
-      <p className={classnames(`${prefix}title`, `${prefix}title-country`)}>
-        {lang[currentLang][country_selected]}
-        {currentLang !== "zh_CN" && " "}
-        {lang[currentLang]["covid"]}
-      </p>
-      <p className={classnames(`${prefix}title`, `${prefix}title-sub`)}>
-        {lang[currentLang]["realTimeData"]}
-      </p>
-      <div
-        className={classnames(
-          `${prefix}covid-info-container`,
-          `${prefix}covid-info-container-data`
-        )}
-      >
-        <div className={`${prefix}covid-info-title`}>
-          {currentLang === "zh_CN"
-            ? `${currentDate.getFullYear()}年${
-                currentDate.getMonth() + 1
-              }月${currentDate.getDate()}日`
-            : `${currentDate.getDate()} ${
-                monthMap[currentDate.getMonth()]
-              } ${currentDate.getFullYear()}`}
-        </div>
-        <p className={`${prefix}covid-today`}>{lang[currentLang]["new"]}</p>
-        <p
+    <div>
+      <section className={`${prefix}container`}>
+        <img className={`${prefix}logo`} alt="" src={main_logo}></img>
+        <p className={classnames(`${prefix}title`, `${prefix}title-country`)}>
+          {lang[currentLang][country_selected]}
+          {currentLang !== "zh_CN" && " "}
+          {lang[currentLang]["covid"]}
+        </p>
+        <p className={classnames(`${prefix}title`, `${prefix}title-sub`)}>
+          {lang[currentLang]["realTimeData"]}
+        </p>
+        <div
           className={classnames(
-            `${prefix}covid-today`,
-            `${prefix}covid-today-count`
+            `${prefix}covid-info-container`,
+            `${prefix}covid-info-container-data`
           )}
         >
-          +{covid_info["new"].toLocaleString()}
-        </p>
-        <div className={`${prefix}covid-multi-container`}>
-          <CovidInfo
-            title={lang[currentLang]["current"]}
-            type="current"
-            count={covid_info.active}
-            sum={covid_info.cases}
-            subtitle={lang[currentLang]["total"]}
-          />
-          <CovidInfo
-            title={lang[currentLang]["curedToday"]}
-            type="cured"
-            count={covid_info.todayRecovered}
-            sum={covid_info.recovered}
-            subtitle={lang[currentLang]["total"]}
-          />
-          <CovidInfo
-            title={lang[currentLang]["diedToday"]}
-            type="died"
-            count={covid_info.todayDeaths}
-            sum={covid_info.deaths}
-            subtitle={lang[currentLang]["total"]}
-          />
-        </div>
-      </div>
-      <div
-        className={classnames(
-          `${prefix}covid-info-container`,
-          `${prefix}covid-info-container-graph`
-        )}
-      >
-        <div className={`${prefix}covid-info-title`}>
-          {lang[currentLang]["growthTrend"]}
-        </div>
-        {chartOptions ? (
-          <Chart
-            options={chartOptions.options}
-            series={chartOptions.series}
-            type="line"
-            height="70%"
-            width="98%"
-            className={`${prefix}covid-trending-chart`}
-          />
-        ) : (
-          <Spin tip="Loading..." />
-        )}
-      </div>
-      <div
-        className={classnames(
-          `${prefix}covid-info-container`,
-          `${prefix}covid-info-container-aboutus`
-        )}
-        style={{ visibility: is_report ? "visible" : "hidden" }}
-      >
-        <div className={`${prefix}covid-info-title-left`}>关于我们</div>
-        <section>
-          <p>- 打造面向留学生的 SaaS</p>
-          <p>- 交友 二手 房屋</p>
-          <p>- 高端社交平台</p>
-        </section>
-        <img src={qrcode} alt="" />
-      </div>
-      <p
-        className={`${prefix}covid-aboutus-tips`}
-        style={{ visibility: is_report ? "visible" : "hidden" }}
-      >
-        {lang[currentLang]["tips"]}
-      </p>
-      <div
-        className={`${prefix}country-selector`}
-        style={{ visibility: !is_report ? "visible" : "hidden" }}
-      >
-        {lang[currentLang]["switchCountry"]}
-        <Dropdown overlay={menu} trigger={["click"]}>
-          <div className="ant-dropdown-link">
-            {lang[currentLang][country_selected]} <DownOutlined />
+          <div className={`${prefix}covid-info-title`}>
+            {currentLang === "zh_CN"
+              ? `${currentDate.getFullYear()}年${
+                  currentDate.getMonth() + 1
+                }月${currentDate.getDate()}日`
+              : `${currentDate.getDate()} ${
+                  monthMap[currentDate.getMonth()]
+                } ${currentDate.getFullYear()}`}
           </div>
-        </Dropdown>
-      </div>
-      <div
-        className={`${prefix}generate-report-button`}
-        onClick={generateReport}
-        style={{ visibility: !is_report ? "visible" : "hidden" }}
-      >
-        {lang[currentLang]["generateReport"]}
-      </div>
-    </section>
+          <p className={`${prefix}covid-today`}>{lang[currentLang]["new"]}</p>
+          <p
+            className={classnames(
+              `${prefix}covid-today`,
+              `${prefix}covid-today-count`
+            )}
+          >
+            +{covid_info["new"].toLocaleString()}
+          </p>
+          <div className={`${prefix}covid-multi-container`}>
+            <CovidInfo
+              title={lang[currentLang]["current"]}
+              type="current"
+              count={covid_info.active}
+              sum={covid_info.cases}
+              subtitle={lang[currentLang]["total"]}
+            />
+            <CovidInfo
+              title={lang[currentLang]["curedToday"]}
+              type="cured"
+              count={covid_info.todayRecovered}
+              sum={covid_info.recovered}
+              subtitle={lang[currentLang]["total"]}
+            />
+            <CovidInfo
+              title={lang[currentLang]["diedToday"]}
+              type="died"
+              count={covid_info.todayDeaths}
+              sum={covid_info.deaths}
+              subtitle={lang[currentLang]["total"]}
+            />
+          </div>
+        </div>
+        <div
+          className={classnames(
+            `${prefix}covid-info-container`,
+            `${prefix}covid-info-container-graph`
+          )}
+        >
+          <div className={`${prefix}covid-info-title`}>
+            {lang[currentLang]["growthTrend"]}
+          </div>
+          {chartOptions ? (
+            <Chart
+              options={chartOptions.options}
+              series={chartOptions.series}
+              type="line"
+              height="70%"
+              width="98%"
+              className={`${prefix}covid-trending-chart`}
+            />
+          ) : (
+            <Spin tip="Loading..." />
+          )}
+        </div>
+        <div
+          className={classnames(
+            `${prefix}covid-info-container`,
+            `${prefix}covid-info-container-aboutus`
+          )}
+          style={{ visibility: is_report ? "visible" : "hidden" }}
+        >
+          <div className={`${prefix}covid-info-title-left`}>关于我们</div>
+          <section>
+            <p>- 打造面向留学生的 SaaS</p>
+            <p>- 交友 二手 房屋</p>
+            <p>- 高端社交平台</p>
+          </section>
+          <img src={qrcode} alt="" />
+        </div>
+        <p
+          className={`${prefix}covid-aboutus-tips`}
+          style={{ visibility: is_report ? "visible" : "hidden" }}
+        >
+          {lang[currentLang]["tips"]}
+        </p>
+        <div
+          className={`${prefix}country-selector`}
+          style={{ visibility: !is_report ? "visible" : "hidden" }}
+        >
+          {lang[currentLang]["switchCountry"]}
+          <Dropdown overlay={menu} trigger={["click"]}>
+            <div className="ant-dropdown-link">
+              {lang[currentLang][country_selected]} <DownOutlined />
+            </div>
+          </Dropdown>
+        </div>
+        <div
+          className={`${prefix}generate-report-button`}
+          onClick={generateReport}
+          style={{ visibility: !is_report ? "visible" : "hidden" }}
+        >
+          {lang[currentLang]["generateReport"]}
+        </div>
+      </section>
+    </div>
   );
 }
 

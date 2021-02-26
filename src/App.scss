@@ -1,7 +1,8 @@
 $prefix: covid;
 $bg_mask: "./assets/imgs/bg_mask.png";
 
-html, body {
+html,
+body {
   overflow: hidden;
 }
 
@@ -16,4 +17,10 @@ html, body {
   background-image: url($bg_mask);
   background-size: contain;
   background-position: center;
+  > div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
 }
