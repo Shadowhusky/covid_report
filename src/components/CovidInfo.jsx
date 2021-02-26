@@ -6,20 +6,20 @@ const prefix = "covidinfo-";
 const colorMap = {
   died: "#525252",
   cured: "#37C756",
-  now: "#FA7C7C",
+  current: "#FA7C7C",
 };
 
 function CovidInfo(props) {
-  const { title, count, sum, type } = props;
+  const { title, count, sum, type, subtitle } = props;
 
   return (
     <div className={`${prefix}container`}>
       <p>{title}</p>
       <p style={{ color: colorMap[type] }}>
-        {type !== "now" && "+"}
+        {type !== "current" && "+"}
         {count.toLocaleString()}
       </p>
-      <p>累计 {sum.toLocaleString()}</p>
+      <p>{subtitle} {sum.toLocaleString()}</p>
     </div>
   );
 }

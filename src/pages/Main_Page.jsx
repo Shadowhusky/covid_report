@@ -16,9 +16,29 @@ import CovidInfo from "../components/CovidInfo";
 import { Menu, Dropdown } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 
+// I18n
+import lang from "../i18n/i18n.jsx";
+
 const prefix = "main-page-";
 
 const currentDate = new Date();
+
+const defaultLang = "zh_CN";
+
+const monthMap = {
+  0: "Jan",
+  1: "Feb",
+  2: "Mar",
+  3: "Apr",
+  4: "May",
+  5: "Jun",
+  6: "Jul",
+  7: "Aug",
+  8: "Sep",
+  9: "Oct",
+  10: "Nov",
+  11: "Dec",
+};
 
 const covid_info_default = {
   cases: 0,
@@ -31,26 +51,30 @@ const covid_info_default = {
 };
 
 const countryIDMap = {
-  英国: "UK",
-  澳大利亚: "Australia",
-  美国: "USA",
-  加拿大: "Canada",
-  新西兰: "New Zealand",
-  新加坡: "Singapore",
+  UK: "UK",
+  Australia: "Australia",
+  USA: "USA",
+  Canada: "Canada",
+  NewZealand: "New Zealand",
+  Singapore: "Singapore",
 };
 
 let menu;
 
-const defaultCountry = "英国";
+const defaultCountry = "UK";
+
 function Main_Page(props) {
+  const currentLang = window.g_config?.lang
+    ? window.g_config.lang
+    : defaultLang;
   const { reportWidth } = props;
-  const [country_selected, selectCountry] = useState("英国");
+  const [country_selected, selectCountry] = useState("UK");
   const [covid_info, update_covid_info] = useState(covid_info_default);
 
   const generateReport = () => {
     const node = document.querySelector(".main-page-container");
     node.style.width = reportWidth + "px";
-    
+
     htmlToImage
       .toPng(node, { pixelRatio: 1 })
       .then(function (dataUrl) {
@@ -81,7 +105,7 @@ function Main_Page(props) {
   useEffect(() => updateCovid(countryIDMap[defaultCountry]), []);
 
   const updateCountry = (e) => {
-    const countryName = e.target.innerText;
+    const countryName = e.target.getAttribute("country");
     selectCountry(countryName);
     const countryID = countryIDMap[countryName];
     updateCovid(countryID);
@@ -92,7 +116,9 @@ function Main_Page(props) {
       {Object.keys(countryIDMap).map((contry, i) => {
         return (
           <Menu.Item key={i}>
-            <div onClick={updateCountry}>{contry}</div>
+            <div onClick={updateCountry} country={contry}>
+              {lang[currentLang][contry]}
+            </div>
           </Menu.Item>
         );
       })}
@@ -103,12 +129,12 @@ function Main_Page(props) {
     <section className={`${prefix}container`}>
       <img className={`${prefix}logo`} alt="" src={main_logo}></img>
       <p className={classnames(`${prefix}title`, `${prefix}title-country`)}>
-        {" "}
-        {country_selected}新冠疫情{" "}
+        {lang[currentLang][country_selected]}
+        {currentLang !== "zh_CN" && " "}
+        {lang[currentLang]["covid"]}
       </p>
       <p className={classnames(`${prefix}title`, `${prefix}title-sub`)}>
-        {" "}
-        实时数据{" "}
+        {lang[currentLang]["realTimeData"]}
       </p>
       <div
         className={classnames(
@@ -117,11 +143,15 @@ function Main_Page(props) {
         )}
       >
         <div className={`${prefix}covid-info-title`}>
-          {`${currentDate.getFullYear()}年${
-            currentDate.getMonth() + 1
-          }月${currentDate.getDate()}日`}
+          {currentLang === "zh_CN"
+            ? `${currentDate.getFullYear()}年${
+                currentDate.getMonth() + 1
+              }月${currentDate.getDate()}日`
+            : `${currentDate.getDate()} ${
+                monthMap[currentDate.getMonth()]
+              } ${currentDate.getFullYear()}`}
         </div>
-        <p className={`${prefix}covid-today`}>今日新增</p>
+        <p className={`${prefix}covid-today`}>{lang[currentLang]["new"]}</p>
         <p
           className={classnames(
             `${prefix}covid-today`,
@@ -132,22 +162,25 @@ function Main_Page(props) {
         </p>
         <div className={`${prefix}covid-multi-container`}>
           <CovidInfo
-            title="现有病例"
-            type="now"
+            title={lang[currentLang]["current"]}
+            type="current"
             count={covid_info.active}
             sum={covid_info.cases}
+            subtitle={lang[currentLang]["total"]}
           />
           <CovidInfo
-            title="今日治愈"
+            title={lang[currentLang]["curedToday"]}
             type="cured"
             count={covid_info.todayRecovered}
             sum={covid_info.recovered}
+            subtitle={lang[currentLang]["total"]}
           />
           <CovidInfo
-            title="今日死亡"
+            title={lang[currentLang]["diedToday"]}
             type="died"
             count={covid_info.todayDeaths}
             sum={covid_info.deaths}
+            subtitle={lang[currentLang]["total"]}
           />
         </div>
       </div>
@@ -157,13 +190,15 @@ function Main_Page(props) {
           `${prefix}covid-info-container-graph`
         )}
       >
-        <div className={`${prefix}covid-info-title`}>目前增长趋势</div>
+        <div className={`${prefix}covid-info-title`}>
+          {lang[currentLang]["growthTrend"]}
+        </div>
       </div>
       <div className={`${prefix}country-selector`}>
-        切换国家:
+        {lang[currentLang]["switchCountry"]}
         <Dropdown overlay={menu} trigger={["click"]}>
           <div className="ant-dropdown-link">
-            {country_selected} <DownOutlined />
+            {lang[currentLang][country_selected]} <DownOutlined />
           </div>
         </Dropdown>
       </div>
@@ -171,7 +206,7 @@ function Main_Page(props) {
         className={`${prefix}generate-report-button`}
         onClick={generateReport}
       >
-        生成报告
+        {lang[currentLang]["generateReport"]}
       </div>
     </section>
   );
