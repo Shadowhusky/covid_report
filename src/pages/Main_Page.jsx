@@ -10,6 +10,7 @@ import qrcode from "../assets/imgs/qrcode.png";
 import { useState, useEffect, useRef } from "react";
 import classnames from "classnames";
 import * as htmlToImage from "html-to-image";
+import { svgToPng } from "../utils/utils";
 
 // Components
 import CovidInfo from "../components/CovidInfo";
@@ -77,9 +78,8 @@ function Main_Page(props) {
   const [reportVisible, setReportVisibility] = useState(false);
 
   const generateReport = () => {
-    const node = document.querySelector(".main-page-container");
+    const node = document.querySelector(`.${prefix}container`);
     node.style.width = reportWidth + "px";
-    document.documentElement.style.width = reportWidth + "px";
 
     // Hide button and country selector, show About us
     setReportVisibility(true);
@@ -87,11 +87,27 @@ function Main_Page(props) {
     setTimeout(() => {
       set_report_state(true);
       htmlToImage
-        .toPng(node, { pixelRatio: 1 })
+        .toSvg(node, {
+          pixelRatio: 1,
+          style: {
+            filter: "",
+          },
+          filter: (node_) => {
+            return node_.getAttribute
+              ? node_?.getAttribute("hideInReport") !== "true"
+              : true;
+          },
+        })
         .then(function (dataUrl) {
-          reportRef.current.src = dataUrl;
-          reportRef.current.setAttribute("state", "loaded");
-          set_report_state(false);
+          svgToPng(dataUrl, 828, 1910)
+            .then((png) => {
+              reportRef.current.src = png;
+              reportRef.current.setAttribute("state", "loaded");
+              set_report_state(false);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
         })
         .catch(function (error) {
           console.error("oops, something went wrong!", error);
@@ -195,8 +211,9 @@ function Main_Page(props) {
           reportVisible && `${prefix}report-show-animated`
         )}
       >
-        <Spin size="large" tip="generating..."/>
-        <img ref={reportRef} alt="" />
+        <Spin size="large" tip="generating..." />
+        <img ref={reportRef} alt="" pagespeed_no_transform />
+        <p>长按图片保存/分享报告</p>
         <span
           onClick={() => {
             reportRef.current.setAttribute("state", "");
@@ -207,7 +224,10 @@ function Main_Page(props) {
           取消
         </span>
       </section>
-      <section className={`${prefix}container`}>
+      <section
+        className={`${prefix}container`}
+        style={{ filter: reportVisible ? "blur(10px)" : "" }}
+      >
         <img className={`${prefix}logo`} alt="" src={main_logo}></img>
         <p className={classnames(`${prefix}title`, `${prefix}title-country`)}>
           {lang[currentLang][country_selected]}
@@ -292,7 +312,7 @@ function Main_Page(props) {
             `${prefix}covid-info-container`,
             `${prefix}covid-info-container-aboutus`
           )}
-          style={{ visibility: is_report ? "visible" : "hidden" }}
+          style={{ display: is_report ? "block" : "none" }}
         >
           <div className={`${prefix}covid-info-title-left`}>关于我们</div>
           <section>
@@ -308,10 +328,7 @@ function Main_Page(props) {
         >
           {lang[currentLang]["tips"]}
         </p>
-        <div
-          className={`${prefix}country-selector`}
-          style={{ visibility: !is_report ? "visible" : "hidden" }}
-        >
+        <div hideInReport={"true"} className={`${prefix}country-selector`}>
           {lang[currentLang]["switchCountry"]}
           <Dropdown overlay={menu} trigger={["click"]}>
             <div className="ant-dropdown-link">
@@ -320,9 +337,9 @@ function Main_Page(props) {
           </Dropdown>
         </div>
         <div
+          hideInReport={"true"}
           className={`${prefix}generate-report-button`}
           onClick={generateReport}
-          style={{ visibility: !is_report ? "visible" : "hidden" }}
         >
           {lang[currentLang]["generateReport"]}
         </div>
