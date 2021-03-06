@@ -9,6 +9,7 @@ import qrcode from "../assets/imgs/qrcode.png";
 // Utils
 import { useState, useEffect, useRef } from "react";
 import classnames from "classnames";
+import html2canvas from "html2canvas";
 import * as htmlToImage from "html-to-image";
 import { svgToPng } from "../utils/utils";
 
@@ -87,28 +88,20 @@ function Main_Page(props) {
 
     setTimeout(() => {
       set_report_state(true);
-      htmlToImage
-        .toSvg(node, {
-          pixelRatio: 1,
-          style: {
-            filter: "",
-          },
-          filter: (node_) => {
-            return node_.getAttribute
-              ? node_?.getAttribute("hideInReport") !== "true"
-              : true;
-          },
-        })
-        .then(function (dataUrl) {
-          svgToPng(dataUrl, 828, 1910)
-            .then((png) => {
-              reportRef.current.src = png;
-              reportRef.current.setAttribute("state", "loaded");
-              set_report_state(false);
-            })
-            .catch((err) => {
-              console.error(err);
-            });
+      html2canvas(node, {
+        height: window.innerHeight - 2,
+        width: reportWidth - 2,
+        windowHeight: 1000,
+        ignoreElements: (node_) => {
+          return node_.getAttribute
+            ? node_?.getAttribute("hideInReport") === "true"
+            : true;
+        },
+      })
+        .then(function (canvas) {
+          reportRef.current.src = canvas.toDataURL("image/jpeg");
+          reportRef.current.setAttribute("state", "loaded");
+          set_report_state(false);
         })
         .catch(function (error) {
           console.error("oops, something went wrong!", error);
@@ -135,9 +128,12 @@ function Main_Page(props) {
     fetch(`https://disease.sh/v3/covid-19/historical/${CountryID}?lastdays=90`)
       .then((res) => res.json())
       .then((data) => {
-        const cases = data.timeline.cases;
+        const { cases } = data.timeline;
         update_chart_options({
           options: {
+            legend: {
+              show: false,
+            },
             chart: {
               animations: {
                 enabled: false,
@@ -157,21 +153,21 @@ function Main_Page(props) {
               width: 3,
             },
             yaxis: {
+              tickAmount: 4,
               labels: {
+                maxWidth: window.innerWidth > 500 ? undefined : 32 ,
                 show: true,
-                align: "right",
-                minWidth: 0,
+                align: "center",
                 style: {
-                  fontSize: "0.13rem",
                   cssClass: "apexcharts-yaxis-label",
                 },
-                formatter: (value) => { 
+                formatter: (value) => {
                   value = parseFloat(value);
-                  if(value > 9999) {
+                  if (value > 9999) {
                     value = value.toExponential(1);
                   }
                   return value;
-                 },
+                },
               },
             },
             xaxis: {
@@ -247,7 +243,8 @@ function Main_Page(props) {
         className={`${prefix}container`}
         style={{ filter: reportVisible ? "blur(10px)" : "" }}
       >
-        <img className={`${prefix}logo`} alt="" src={main_logo}></img>
+        <span className={`${prefix}logo`}>- 留学与海 -</span>
+        {/* <img className={`${prefix}logo`} alt="" src={main_logo}></img> */}
         <p className={classnames(`${prefix}title`, `${prefix}title-country`)}>
           {lang[country_selected]}
           {currentLang !== "zh_CN" && " "}
@@ -319,7 +316,7 @@ function Main_Page(props) {
               series={chartOptions.series}
               type="line"
               height="70%"
-              width="98%"
+              width="88%"
               className={`${prefix}covid-trending-chart`}
             />
           ) : (

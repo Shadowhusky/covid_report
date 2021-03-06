@@ -3,6 +3,20 @@ $prefix: main-page;
 $bg_mask: "../assets/imgs/bg_mask.png";
 
 @import url("https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap");
+@font-face {
+  font-family: "FZYaSong-H-GBK";
+  src: url("../fonts/FZYaSong-H-GBK.TTF") format("truetype");
+}
+
+@font-face {
+  font-family: "FZZongYi-M05S";
+  src: url("../fonts/FZZYJW.TTF") format("truetype");
+}
+
+@font-face {
+  font-family: "Microsoft YaHei UI";
+  src: url("../fonts/msyhbd.ttc") format("truetype");
+}
 
 .#{$prefix}-container {
   width: inherit;
@@ -102,7 +116,11 @@ $bg_mask: "../assets/imgs/bg_mask.png";
 .#{$prefix}-logo {
   position: absolute;
   width: 2.7rem;
-  top: 0.15rem;
+  top: 0.2rem;
+  color: #fff;
+  font-family: "ZCOOL KuaiLe";
+  font-size: 0.26rem;
+  text-align: center;
 }
 
 .#{$prefix}-title {
@@ -207,6 +225,12 @@ $bg_mask: "../assets/imgs/bg_mask.png";
 
   display: flex;
   justify-content: center;
+}
+
+.#{$prefix}-covid-trending-chart {
+  position: absolute;
+  top: 25%;
+  width: 100%;
 }
 
 .#{$prefix}-covid-trending-chart > #apexchartsLinearxchart {
@@ -326,6 +350,11 @@ $bg_mask: "../assets/imgs/bg_mask.png";
   opacity: 1;
   transform: none;
   // animation: #{$prefix}-report-show-animation 0.5s ease-out forwards;
+}
+
+.apexcharts-yaxis-label {
+  font-size: 0.14rem;
+  line-height: 0.14rem;
 }
 
 @keyframes #{$prefix}-report-show-animation {
