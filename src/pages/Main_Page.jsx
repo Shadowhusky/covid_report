@@ -3,15 +3,12 @@ import "./Main_Page.scss";
 import "antd/dist/antd.min.css";
 
 // Imgs
-import main_logo from "../assets/imgs/main_logo.png";
 import qrcode from "../assets/imgs/qrcode.png";
 
 // Utils
 import { useState, useEffect, useRef } from "react";
 import classnames from "classnames";
 import html2canvas from "html2canvas";
-import * as htmlToImage from "html-to-image";
-import { svgToPng } from "../utils/utils";
 
 // Components
 import CovidInfo from "../components/CovidInfo";
