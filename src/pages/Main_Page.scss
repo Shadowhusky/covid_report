@@ -229,8 +229,26 @@ $bg_mask: "../assets/imgs/bg_mask.png";
 
 .#{$prefix}-covid-trending-chart {
   position: absolute;
-  top: 25%;
+  margin: auto 0;
   width: 100%;
+  height: -moz-fit-content;
+  height: fit-content;
+  top: 0.25rem;
+  bottom: 0;
+  padding-left: 0.1rem;
+}
+
+@media (max-width: 350px) {
+  .#{$prefix}-covid-trending-chart {
+    top: 0.19rem;
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 700px) {
+  .#{$prefix}-covid-trending-chart {
+    top: 0.38rem;
+  }
 }
 
 .#{$prefix}-covid-trending-chart > #apexchartsLinearxchart {

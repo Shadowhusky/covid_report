@@ -315,8 +315,8 @@ function Main_Page(props) {
               options={chartOptions.options}
               series={chartOptions.series}
               type="line"
-              height="70%"
-              width="88%"
+              height="76%"
+              width="86%"
               className={`${prefix}covid-trending-chart`}
             />
           ) : (
