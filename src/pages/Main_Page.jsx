@@ -112,7 +112,7 @@ function Main_Page(props) {
 
   const updateCovid = (CountryID) => {
     update_chart_options(null);
-    fetch(`https://disease.sh/v3/covid-19/countries/${CountryID}?strict=true`)
+    fetch(`https://disease.sh/v3/covid-19/countries/${CountryID}?strict=false`)
       .then((res) => res.json())
       .then((data) => {
         update_covid_info({
