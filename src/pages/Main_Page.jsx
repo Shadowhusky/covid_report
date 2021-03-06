@@ -19,7 +19,7 @@ import { DownOutlined } from "@ant-design/icons";
 import Chart from "react-apexcharts";
 
 // I18n
-import lang from "../i18n/i18n.jsx";
+import lang_ from "../i18n/i18n.jsx";
 
 const prefix = "main-page-";
 
@@ -69,6 +69,7 @@ function Main_Page(props) {
   const currentLang = window.g_config?.lang
     ? window.g_config.lang
     : defaultLang;
+  const lang = lang_[currentLang];
   const { reportWidth } = props;
   const reportRef = useRef(null);
   const [country_selected, selectCountry] = useState("UK");
@@ -155,13 +156,31 @@ function Main_Page(props) {
             stroke: {
               width: 3,
             },
+            yaxis: {
+              labels: {
+                show: true,
+                align: "right",
+                minWidth: 0,
+                style: {
+                  fontSize: "0.13rem",
+                  cssClass: "apexcharts-yaxis-label",
+                },
+                formatter: (value) => { 
+                  value = parseFloat(value);
+                  if(value > 9999) {
+                    value = value.toExponential(1);
+                  }
+                  return value;
+                 },
+              },
+            },
             xaxis: {
               categories: Object.keys(cases),
-              tickAmount: 6,
+              tickAmount: 5,
               labels: {
                 rotate: 0,
                 style: {
-                  fontSize: "0.09rem",
+                  fontSize: "0.11rem",
                 },
               },
             },
@@ -191,7 +210,7 @@ function Main_Page(props) {
         return (
           <Menu.Item key={i}>
             <div onClick={updateCountry} country={contry}>
-              {lang[currentLang][contry]}
+              {lang[contry]}
             </div>
           </Menu.Item>
         );
@@ -221,7 +240,7 @@ function Main_Page(props) {
             setReportVisibility(false);
           }}
         >
-          取消
+          {lang["cancel"]}
         </span>
       </section>
       <section
@@ -230,12 +249,12 @@ function Main_Page(props) {
       >
         <img className={`${prefix}logo`} alt="" src={main_logo}></img>
         <p className={classnames(`${prefix}title`, `${prefix}title-country`)}>
-          {lang[currentLang][country_selected]}
+          {lang[country_selected]}
           {currentLang !== "zh_CN" && " "}
-          {lang[currentLang]["covid"]}
+          {lang["covid"]}
         </p>
         <p className={classnames(`${prefix}title`, `${prefix}title-sub`)}>
-          {lang[currentLang]["realTimeData"]}
+          {lang["realTimeData"]}
         </p>
         <div
           className={classnames(
@@ -252,7 +271,7 @@ function Main_Page(props) {
                   monthMap[currentDate.getMonth()]
                 } ${currentDate.getFullYear()}`}
           </div>
-          <p className={`${prefix}covid-today`}>{lang[currentLang]["new"]}</p>
+          <p className={`${prefix}covid-today`}>{lang["new"]}</p>
           <p
             className={classnames(
               `${prefix}covid-today`,
@@ -263,25 +282,25 @@ function Main_Page(props) {
           </p>
           <div className={`${prefix}covid-multi-container`}>
             <CovidInfo
-              title={lang[currentLang]["current"]}
+              title={lang["current"]}
               type="current"
               count={covid_info.active}
               sum={covid_info.cases}
-              subtitle={lang[currentLang]["total"]}
+              subtitle={lang["total"]}
             />
             <CovidInfo
-              title={lang[currentLang]["curedToday"]}
+              title={lang["curedToday"]}
               type="cured"
               count={covid_info.todayRecovered}
               sum={covid_info.recovered}
-              subtitle={lang[currentLang]["total"]}
+              subtitle={lang["total"]}
             />
             <CovidInfo
-              title={lang[currentLang]["diedToday"]}
+              title={lang["diedToday"]}
               type="died"
               count={covid_info.todayDeaths}
               sum={covid_info.deaths}
-              subtitle={lang[currentLang]["total"]}
+              subtitle={lang["total"]}
             />
           </div>
         </div>
@@ -292,7 +311,7 @@ function Main_Page(props) {
           )}
         >
           <div className={`${prefix}covid-info-title`}>
-            {lang[currentLang]["growthTrend"]}
+            {lang["growthTrend"]}
           </div>
           {chartOptions ? (
             <Chart
@@ -326,13 +345,13 @@ function Main_Page(props) {
           className={`${prefix}covid-aboutus-tips`}
           style={{ visibility: is_report ? "visible" : "hidden" }}
         >
-          {lang[currentLang]["tips"]}
+          {lang["tips"]}
         </p>
         <div hideInReport={"true"} className={`${prefix}country-selector`}>
-          {lang[currentLang]["switchCountry"]}
+          {lang["switchCountry"]}
           <Dropdown overlay={menu} trigger={["click"]}>
             <div className="ant-dropdown-link">
-              {lang[currentLang][country_selected]} <DownOutlined />
+              {lang[country_selected]} <DownOutlined />
             </div>
           </Dropdown>
         </div>
@@ -341,7 +360,7 @@ function Main_Page(props) {
           className={`${prefix}generate-report-button`}
           onClick={generateReport}
         >
-          {lang[currentLang]["generateReport"]}
+          {lang["generateReport"]}
         </div>
       </section>
     </div>

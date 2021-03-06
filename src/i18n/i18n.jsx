@@ -18,6 +18,8 @@ export default {
     generateReport: "生成报告",
     total: "累计",
     tips: "长按扫码关注公众号，获取更多留学资讯",
+    cancel: "取消",
+    case: "例",
   },
   en_US: {
     UK: "UK",
@@ -38,5 +40,7 @@ export default {
     total: "total",
     tips:
       "Hold and scan the QR Code for subscribing our offical account, know more information of studying aboard",
+    cancel: "cancel",
+    case: "case",
   },
 };
