@@ -88,7 +88,7 @@ function Main_Page(props) {
       html2canvas(node, {
         height: window.innerHeight - 2,
         width: reportWidth - 2,
-        windowHeight: 1000,
+        windowHeight: 500,
         ignoreElements: (node_) => {
           return node_.getAttribute
             ? node_?.getAttribute("hideInReport") === "true"
