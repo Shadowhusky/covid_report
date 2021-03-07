@@ -73,7 +73,6 @@ function Main_Page(props) {
   const [country_selected, selectCountry] = useState("UK");
   const [covid_info, update_covid_info] = useState(covid_info_default);
   const [chartOptions, update_chart_options] = useState(null);
-  const [is_report, set_report_state] = useState(false);
   const [reportVisible, setReportVisibility] = useState(false);
 
   const generateReport = () => {
@@ -84,21 +83,28 @@ function Main_Page(props) {
     setReportVisibility(true);
 
     setTimeout(() => {
-      set_report_state(true);
       html2canvas(node, {
         height: window.innerHeight - 2,
         width: reportWidth - 2,
-        windowHeight: 500,
+        removeContainer: false,
+        backgroundColor: null,
+        onclone: (node_) => {
+          // Display hidden content in the report
+          node_
+            .querySelectorAll(`.${prefix}display-in-report`)
+            .forEach((displayNode) => {
+              displayNode.style.display = "block";
+            });
+        },
         ignoreElements: (node_) => {
           return node_.getAttribute
-            ? node_?.getAttribute("hideInReport") === "true"
+            ? node_?.getAttribute("hideinreport") === "true"
             : true;
         },
       })
         .then(function (canvas) {
           reportRef.current.src = canvas.toDataURL("image/jpeg");
           reportRef.current.setAttribute("state", "loaded");
-          set_report_state(false);
         })
         .catch(function (error) {
           console.error("oops, something went wrong!", error);
@@ -109,7 +115,9 @@ function Main_Page(props) {
 
   const updateCovid = (CountryID) => {
     update_chart_options(null);
-    fetch(`https://disease.sh/v3/covid-19/countries/${CountryID}?yesterday=true&strict=false`)
+    fetch(
+      `https://disease.sh/v3/covid-19/countries/${CountryID}?yesterday=true&strict=false`
+    )
       .then((res) => res.json())
       .then((data) => {
         update_covid_info({
@@ -152,7 +160,7 @@ function Main_Page(props) {
             yaxis: {
               tickAmount: 4,
               labels: {
-                maxWidth: window.innerWidth > 500 ? undefined : 32 ,
+                maxWidth: window.innerWidth > 500 ? undefined : 32,
                 show: true,
                 align: "center",
                 style: {
@@ -229,7 +237,6 @@ function Main_Page(props) {
         <span
           onClick={() => {
             reportRef.current.setAttribute("state", "");
-            set_report_state(false);
             setReportVisibility(false);
           }}
         >
@@ -323,9 +330,9 @@ function Main_Page(props) {
         <div
           className={classnames(
             `${prefix}covid-info-container`,
-            `${prefix}covid-info-container-aboutus`
+            `${prefix}covid-info-container-aboutus`,
+            `${prefix}display-in-report`
           )}
-          style={{ display: is_report ? "block" : "none" }}
         >
           <div className={`${prefix}covid-info-title-left`}>关于我们</div>
           <section>
@@ -336,12 +343,14 @@ function Main_Page(props) {
           <img src={qrcode} alt="" />
         </div>
         <p
-          className={`${prefix}covid-aboutus-tips`}
-          style={{ visibility: is_report ? "visible" : "hidden" }}
+          className={classnames(
+            `${prefix}covid-aboutus-tips`,
+            `${prefix}display-in-report`
+          )}
         >
           {lang["tips"]}
         </p>
-        <div hideInReport={"true"} className={`${prefix}country-selector`}>
+        <div hideinreport={"true"} className={`${prefix}country-selector`}>
           {lang["switchCountry"]}
           <Dropdown overlay={menu} trigger={["click"]}>
             <div className="ant-dropdown-link">
@@ -350,7 +359,7 @@ function Main_Page(props) {
           </Dropdown>
         </div>
         <div
-          hideInReport={"true"}
+          hideinreport={"true"}
           className={`${prefix}generate-report-button`}
           onClick={generateReport}
         >

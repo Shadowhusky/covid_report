@@ -2,7 +2,7 @@
 $prefix: main-page;
 $bg_mask: "../assets/imgs/bg_mask.png";
 
-// @import url("https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap");
 @font-face {
   font-family: "FZYaSong-H-GBK";
   src: url("../fonts/FZYaSong-H-GBK.TTF") format("truetype");
@@ -43,6 +43,10 @@ $bg_mask: "../assets/imgs/bg_mask.png";
   }
 }
 
+.#{$prefix}-display-in-report {
+  display: none;
+}
+
 .#{$prefix}-report-mask {
   position: fixed;
   width: 100%;
@@ -59,13 +63,14 @@ $bg_mask: "../assets/imgs/bg_mask.png";
   transform: translateY(1rem);
   opacity: 0;
   position: fixed;
-  width: 4.8rem;
-  height: 9rem;
+  width: 4.2rem;
+  height: 8.2rem;
   margin: auto;
   top: 0;
   bottom: 0;
   background-color: #fff;
   border-radius: 10px;
+  overflow: hidden;
 
   overflow: hidden;
   > span {
@@ -105,11 +110,11 @@ $bg_mask: "../assets/imgs/bg_mask.png";
 
   > p {
     position: absolute;
-    bottom: 0.23rem;
-    left: 0.65rem;
+    bottom: 0.16rem;
+    left: 0.62rem;
     margin: 0;
     color: #fff;
-    font-size: 0.26rem;
+    font-size: 0.21rem;
   }
 }
 
