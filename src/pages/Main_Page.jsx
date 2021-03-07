@@ -86,6 +86,7 @@ function Main_Page(props) {
     setTimeout(() => {
       set_report_state(true);
       html2canvas(node, {
+        removeContainer: false,
         height: window.innerHeight - 2,
         width: reportWidth - 2,
         windowHeight: 500,
@@ -109,7 +110,7 @@ function Main_Page(props) {
 
   const updateCovid = (CountryID) => {
     update_chart_options(null);
-    fetch(`https://disease.sh/v3/covid-19/countries/${CountryID}?strict=false`)
+    fetch(`https://disease.sh/v3/covid-19/countries/${CountryID}?yesterday=true&strict=false`)
       .then((res) => res.json())
       .then((data) => {
         update_covid_info({
