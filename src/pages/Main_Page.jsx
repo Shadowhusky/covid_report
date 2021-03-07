@@ -86,7 +86,6 @@ function Main_Page(props) {
     setTimeout(() => {
       set_report_state(true);
       html2canvas(node, {
-        removeContainer: false,
         height: window.innerHeight - 2,
         width: reportWidth - 2,
         windowHeight: 500,
