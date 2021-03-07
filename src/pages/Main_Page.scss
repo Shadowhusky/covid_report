@@ -2,7 +2,7 @@
 $prefix: main-page;
 $bg_mask: "../assets/imgs/bg_mask.png";
 
-@import url("https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap");
 @font-face {
   font-family: "FZYaSong-H-GBK";
   src: url("../fonts/FZYaSong-H-GBK.TTF") format("truetype");
@@ -15,7 +15,7 @@ $bg_mask: "../assets/imgs/bg_mask.png";
 
 @font-face {
   font-family: "Microsoft YaHei UI";
-  src: url("../fonts/msyhbd.ttc") format("truetype");
+  src: url("../fonts/msyhbd.ttf") format("truetype");
 }
 
 .#{$prefix}-container {
