@@ -199,6 +199,7 @@ function Main_Page(props) {
   useEffect(() => updateCovid(countryIDMap[defaultCountry]), []);
 
   const updateCountry = (e) => {
+    reportRef.current.setAttribute("state", "");
     const countryName = e.target.getAttribute("country");
     selectCountry(countryName);
     const countryID = countryIDMap[countryName];
@@ -236,7 +237,6 @@ function Main_Page(props) {
         <p>长按图片保存/分享报告</p>
         <span
           onClick={() => {
-            reportRef.current.setAttribute("state", "");
             setReportVisibility(false);
           }}
         >
